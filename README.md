@@ -234,7 +234,7 @@ Expect:
 
 - `domain` in response = `"Quality"`
 
-
+  ![](assets/2025-11-08-22-03-11-2025-11-08-21-48-55-image.png)
 
 ---
 
@@ -251,6 +251,8 @@ Expect:
 ```
 
 Expect `domain` = `"OHS"`, `status = "Planned"`.
+
+![](assets/2025-11-08-22-03-22-2025-11-08-21-49-10-image.png)
 
 ---
 
@@ -273,6 +275,8 @@ Expect:
 - `status` updated to `"Completed"`.
 
 - `findings` saved.
+
+  ![](assets/2025-11-08-22-03-30-2025-11-08-21-49-36-image.png)
 
 ---
 
@@ -306,6 +310,8 @@ Expected logic:
 
 - Sets `status = "Open"`.
 
+  ![](assets/2025-11-08-22-03-42-2025-11-08-21-50-10-image.png)
+
 ---
 
 ### 4.2 CAPA from risk (late delivery risk, id = 2)
@@ -320,6 +326,8 @@ Expected logic:
   "dueDate": "2026-01-15"
 }
 ```
+
+![](assets/2025-11-08-22-03-51-2025-11-08-21-50-37-image.png)
 
 ---
 
@@ -341,6 +349,8 @@ All three should be created with:
 - `status = "Open"`
 
 - `createdAt` and `updatedAt` set.
+
+  ![](assets/2025-11-08-22-03-59-2025-11-08-21-50-53-image.png)
 
 ---
 
@@ -364,6 +374,8 @@ Assume action IDs:
 }
 ```
 
+![](assets/2025-11-08-22-04-07-2025-11-08-21-51-22-image.png)
+
 #### Mark capacity planning action Done & adjust date
 
 `PUT /api/actions/2`:
@@ -375,6 +387,8 @@ Assume action IDs:
 }
 ```
 
+#### ![](assets/2025-11-08-22-04-18-2025-11-08-21-51-45-image.png)
+
 #### Mark PPE action Overdue
 
 `PUT /api/actions/3`:
@@ -384,6 +398,8 @@ Assume action IDs:
   "status": "Overdue"
 }
 ```
+
+![](assets/2025-11-08-22-04-25-2025-11-08-21-52-04-image.png)
 
 ---
 
@@ -426,10 +442,4 @@ That confirms:
 
 - Incidents grouped by `Domain`.
 
----
-
-If you want next, I can:
-
-- Design a **test script** markdown (step-by-step “lab” you can give to classmates or teacher), or
-
-- Turn these scenarios into **slides** explaining “Scenario → API calls → IMS logic demonstrated” for your presentation.
+  ![](assets/2025-11-08-22-04-34-2025-11-08-21-52-31-image.png)
