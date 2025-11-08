@@ -1,0 +1,1067 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Integrated Management System API for risks, incidents, audits and CAPA.",
+        "title": "IntegraFlow IMS API",
+        "contact": {
+            "name": "IntegraFlow IMS Team",
+            "email": "ims@example.com"
+        },
+        "version": "1.0"
+    },
+    "basePath": "/",
+    "paths": {
+        "/api/actions": {
+            "get": {
+                "description": "Returns actions, optionally filtered by status or source type.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "actions"
+                ],
+                "summary": "List actions",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Status filter (Open|In Progress|Done|Overdue)",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Source type filter (Risk|Incident|Audit)",
+                        "name": "sourceType",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Action"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates a corrective/preventive action linked to a risk, incident or audit.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "actions"
+                ],
+                "summary": "Create CAPA action",
+                "parameters": [
+                    {
+                        "description": "Action payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/httpapi.CreateActionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Action"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/actions/{id}": {
+            "put": {
+                "description": "Updates the status and/or due date of an action.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "actions"
+                ],
+                "summary": "Update action",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Action ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/httpapi.UpdateActionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Action"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/audits": {
+            "get": {
+                "description": "Returns internal audits, optionally filtered by status.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "audits"
+                ],
+                "summary": "List audits",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Status filter (Planned|In Progress|Completed)",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Audit"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates a new IMS internal audit record.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "audits"
+                ],
+                "summary": "Create internal audit",
+                "parameters": [
+                    {
+                        "description": "Audit payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/httpapi.CreateAuditRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Audit"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/audits/{id}": {
+            "put": {
+                "description": "Updates audit status and/or findings.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "audits"
+                ],
+                "summary": "Update audit",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Audit ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/httpapi.UpdateAuditRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Audit"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dashboard": {
+            "get": {
+                "description": "Returns aggregated IMS KPIs (risks, incidents, actions).",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "dashboard"
+                ],
+                "summary": "Get IMS dashboard",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Dashboard"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/incidents": {
+            "get": {
+                "description": "Returns incidents, optionally filtered by domain and status.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "incidents"
+                ],
+                "summary": "List incidents",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Domain filter",
+                        "name": "domain",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Status filter (Open|Investigation|Closed)",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Incident"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Records an incident/nonconformity in the IMS.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "incidents"
+                ],
+                "summary": "Create a new incident",
+                "parameters": [
+                    {
+                        "description": "Incident payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/httpapi.CreateIncidentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Incident"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/incidents/{id}": {
+            "get": {
+                "description": "Returns a single incident by ID.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "incidents"
+                ],
+                "summary": "Get incident",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Incident ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Incident"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Updates root cause and/or status of an incident.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "incidents"
+                ],
+                "summary": "Update incident",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Incident ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/httpapi.UpdateIncidentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Incident"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/risks": {
+            "get": {
+                "description": "Returns all risks, optionally filtered by IMS domain and status.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "risks"
+                ],
+                "summary": "List risks",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Domain filter (quality|environment|ohs|isms)",
+                        "name": "domain",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Status filter (Open|Accepted|Mitigated)",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Risk"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates a new IMS risk and calculates its risk score and level.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "risks"
+                ],
+                "summary": "Create a new risk",
+                "parameters": [
+                    {
+                        "description": "Risk payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/httpapi.CreateRiskRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Risk"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/risks/{id}": {
+            "put": {
+                "description": "Updates the status of an existing risk.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "risks"
+                ],
+                "summary": "Update risk status",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Risk ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "New status",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/httpapi.UpdateRiskStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Risk"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "domain.Action": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "dueDate": {
+                    "description": "YYYY-MM-DD",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "owner": {
+                    "type": "string"
+                },
+                "sourceId": {
+                    "type": "integer"
+                },
+                "sourceType": {
+                    "description": "Risk, Incident, Audit",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Open, In Progress, Done, Overdue",
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.Audit": {
+            "type": "object",
+            "properties": {
+                "auditor": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "domain": {
+                    "description": "Main focus area",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/domain.Domain"
+                        }
+                    ]
+                },
+                "findings": {
+                    "description": "Text field",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "plannedDate": {
+                    "description": "YYYY-MM-DD",
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Planned, In Progress, Completed",
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.Dashboard": {
+            "type": "object",
+            "properties": {
+                "actionsByStatus": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    }
+                },
+                "highRisks": {
+                    "type": "integer"
+                },
+                "incidentsByDomain": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    }
+                },
+                "openIncidents": {
+                    "type": "integer"
+                },
+                "totalIncidents": {
+                    "type": "integer"
+                },
+                "totalRisks": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.Domain": {
+            "type": "string",
+            "enum": [
+                "Quality",
+                "Environment",
+                "OHS",
+                "Information Security"
+            ],
+            "x-enum-comments": {
+                "DomainEnv": "ISO 14001",
+                "DomainISMS": "ISMS / ISO 27001",
+                "DomainOHS": "ISO 45001",
+                "DomainQuality": "ISO 9001"
+            },
+            "x-enum-descriptions": [
+                "ISO 9001",
+                "ISO 14001",
+                "ISO 45001",
+                "ISMS / ISO 27001"
+            ],
+            "x-enum-varnames": [
+                "DomainQuality",
+                "DomainEnv",
+                "DomainOHS",
+                "DomainISMS"
+            ]
+        },
+        "domain.Incident": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "description": "RFC3339",
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "domain": {
+                    "$ref": "#/definitions/domain.Domain"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "likelihood": {
+                    "description": "1-5",
+                    "type": "integer"
+                },
+                "relatedRiskId": {
+                    "type": "integer"
+                },
+                "riskLevel": {
+                    "description": "Low/Medium/High",
+                    "type": "string"
+                },
+                "riskScore": {
+                    "type": "integer"
+                },
+                "rootCause": {
+                    "type": "string"
+                },
+                "severity": {
+                    "description": "1-5",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "Open, Investigation, Closed",
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "description": "RFC3339",
+                    "type": "string"
+                }
+            }
+        },
+        "domain.Risk": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "description": "RFC3339 timestamp",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "Detailed description",
+                    "type": "string"
+                },
+                "domain": {
+                    "description": "IMS Domain (Quality/Environment/OHS/Information Security)",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/domain.Domain"
+                        }
+                    ]
+                },
+                "id": {
+                    "description": "Auto-generated risk ID",
+                    "type": "integer"
+                },
+                "impact": {
+                    "description": "1-5",
+                    "type": "integer"
+                },
+                "level": {
+                    "description": "Low/Medium/High",
+                    "type": "string"
+                },
+                "likelihood": {
+                    "description": "1-5",
+                    "type": "integer"
+                },
+                "owner": {
+                    "description": "Responsible person / role",
+                    "type": "string"
+                },
+                "process": {
+                    "description": "Process where risk occurs",
+                    "type": "string"
+                },
+                "score": {
+                    "description": "Likelihood * Impact",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "Open, Accepted, Mitigated",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "Short risk title",
+                    "type": "string"
+                }
+            }
+        },
+        "httpapi.CreateActionRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "dueDate": {
+                    "description": "YYYY-MM-DD",
+                    "type": "string"
+                },
+                "owner": {
+                    "type": "string"
+                },
+                "sourceId": {
+                    "type": "integer"
+                },
+                "sourceType": {
+                    "description": "risk|incident|audit",
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "httpapi.CreateAuditRequest": {
+            "type": "object",
+            "properties": {
+                "auditor": {
+                    "type": "string"
+                },
+                "domain": {
+                    "description": "quality|environment|ohs|isms",
+                    "type": "string"
+                },
+                "plannedDate": {
+                    "description": "YYYY-MM-DD",
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "httpapi.CreateIncidentRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "domain": {
+                    "description": "quality|environment|ohs|isms",
+                    "type": "string"
+                },
+                "likelihood": {
+                    "description": "1-5",
+                    "type": "integer"
+                },
+                "relatedRiskId": {
+                    "description": "Optional link to risk",
+                    "type": "integer"
+                },
+                "severity": {
+                    "description": "1-5",
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "httpapi.CreateRiskRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "description": "Detailed risk description",
+                    "type": "string"
+                },
+                "domain": {
+                    "description": "Domain: quality|environment|ohs|isms",
+                    "type": "string"
+                },
+                "impact": {
+                    "description": "1 (minor) - 5 (catastrophic)",
+                    "type": "integer"
+                },
+                "likelihood": {
+                    "description": "1 (rare) - 5 (almost certain)",
+                    "type": "integer"
+                },
+                "owner": {
+                    "description": "Responsible person or role",
+                    "type": "string"
+                },
+                "process": {
+                    "description": "Process where the risk occurs",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "Short name of the risk",
+                    "type": "string"
+                }
+            }
+        },
+        "httpapi.UpdateActionRequest": {
+            "type": "object",
+            "properties": {
+                "dueDate": {
+                    "description": "Optional new due date",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Open, In Progress, Done, Overdue",
+                    "type": "string"
+                }
+            }
+        },
+        "httpapi.UpdateAuditRequest": {
+            "type": "object",
+            "properties": {
+                "findings": {
+                    "description": "Summary of audit findings",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Planned, In Progress, Completed",
+                    "type": "string"
+                }
+            }
+        },
+        "httpapi.UpdateIncidentRequest": {
+            "type": "object",
+            "properties": {
+                "rootCause": {
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Open, Investigation, Closed",
+                    "type": "string"
+                }
+            }
+        },
+        "httpapi.UpdateRiskStatusRequest": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "description": "Open, Accepted, Mitigated",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
